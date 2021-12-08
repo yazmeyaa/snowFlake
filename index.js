@@ -90,12 +90,15 @@ function snowFlakeGenerator(){
 }
 
 function timeUntilNewYear(){
-    const NewYear2022 = new Date(2022, 01,)
+    const NewYear2022 = new Date(2022, 0, 1)
     ctx.textAlign = "center"
-    ctx.font = '48px Verdana'
+    ctx.font = `${( (canvas.width - 320) / (1280 - 320) * (38 - 18) + 18 )}px Verdana`
     ctx.fillStyle = 'white'
     ctx.strokeStyle = 'red'
-    ctx.fillText(`До нового года осталось ${ Math.round( ( NewYear2022 - Date.now() ) / 1000 / 60 / 60 / 24 ) } дня`, canvas.width / 2, canvas.height / 2)
+    let now = new Date
+    ctx.fillText(`До нового года осталось:`, canvas.width / 2, canvas.height / 2)
+    ctx.font = `${( (canvas.width - 320) / (1280 - 320) * (38 - 20) + 20 )}px Verdana`
+    ctx.fillText(`${ Math.floor( ( NewYear2022 - Date.now() ) / 1000 / 60 / 60 / 24 ) } д, ${ 23 - now.getHours() } ч., ${60 - now.getMinutes()} мин., ${ 60 - now.getSeconds()} сек.`, canvas.width / 2, (canvas.height / 2) + 60)
     ctx.stroke()
 }
 
