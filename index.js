@@ -52,7 +52,7 @@ class snowFlake{
 const snowFlakes = new Array()
 
 function drawBackground(){
-    ctx.fillStyle = 'black'
+    ctx.fillStyle = '#09172e'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
@@ -61,7 +61,7 @@ function snowFlakeGenerator(SFCount){
         while(snowFlakes.length < SFCount){
             snowFlakes.push(new snowFlake(
                 randomInt(-600, canvas.width + 600),
-                randomInt(0, canvas.height),
+                randomInt(-600, canvas.height + 600),
                 randomInt(5,8),
                 randomInt(150,190)
             ))
@@ -70,6 +70,16 @@ function snowFlakeGenerator(SFCount){
         while(snowFlakes.length > SFCount){
             snowFlakes.pop()
         }
+
+        snowFlakes.sort((a, b) => {
+            if(a.size > b.size){
+                return 1
+            }
+            if(a.size < b.size){
+                return -1
+            }
+            return 0
+        })
 }
 
 function timeUntilNewYear(){
