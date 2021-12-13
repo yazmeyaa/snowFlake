@@ -4,9 +4,10 @@ const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
-window.addEventListener('resize', ()=>{
+window.addEventListener('resize', (event)=>{
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
+    console.log(event)
 })
 
 const mouse = {
@@ -30,7 +31,7 @@ class snowFlake{
         this.speed = speed
     }
     render(){
-        ctx.fillStyle = this.size <= 6 ? 'gray' : 'white'
+        ctx.fillStyle = this.size <= 4 ? 'gray' : 'white'
         ctx.strokeStyle = 'black'
         ctx.beginPath()
         ctx.arc(this.xPos, this.yPos, this.size, 0, 2 * Math.PI, false)
@@ -39,9 +40,9 @@ class snowFlake{
         ctx.stroke()
     }
     update(dt){
-        this.yPos += this.size <= 6 ? ( this.speed * dt ) * .5 : this.speed * dt 
+        this.yPos += this.size <= 4 ? ( this.speed * dt ) * .5 : this.speed * dt 
         this.xPos += ( ( ( canvas.width / 2 )- mouse.XPos ) * dt ) * .4
-        if(this.yPos > canvas.height + 800){
+        if(this.yPos > canvas.height + 500){
             this.yPos = 0
             this.xPos = randomInt(-600, canvas.width + 600)
             this.speed = randomInt(160, 240)
@@ -62,7 +63,7 @@ function snowFlakeGenerator(SFCount){
             snowFlakes.push(new snowFlake(
                 randomInt(-600, canvas.width + 600),
                 randomInt(-600, canvas.height + 600),
-                randomInt(5,8),
+                randomInt(4,8),
                 randomInt(150,190)
             ))
         }
