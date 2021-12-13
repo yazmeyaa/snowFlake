@@ -4,16 +4,16 @@ const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
-window.addEventListener('resize', (event)=>{
+window.addEventListener('resize', ()=>{
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-    console.log(event)
 })
 
 const mouse = {
     XPos: 0,
     YPos: 0,
 }
+
 window.addEventListener('pointermove', (event)=>{
     mouse.XPos = event.clientX
     mouse.YPos = event.clientY
@@ -24,14 +24,17 @@ function randomInt(min, max){
 }
 
 class snowFlake{
-    constructor(x, y, size, speed){
+    constructor(x, y, size, speed, xOffset, sizeBorder){
         this.xPos = x,
         this.yPos = y,
         this.size = size,
-        this.speed = speed
+        this.speed = speed,
+        this.xOffset = xOffset,
+        this.sizeBorder = sizeBorder
     }
+
     render(){
-        ctx.fillStyle = this.size <= 4 ? 'gray' : 'white'
+        ctx.fillStyle = this.size <= this.sizeBorder ? 'gray' : 'white'
         ctx.strokeStyle = 'black'
         ctx.beginPath()
         ctx.arc(this.xPos, this.yPos, this.size, 0, 2 * Math.PI, false)
@@ -40,12 +43,13 @@ class snowFlake{
         ctx.stroke()
     }
     update(dt){
-        this.yPos += this.size <= 4 ? ( this.speed * dt ) * .5 : this.speed * dt 
-        this.xPos += ( ( ( canvas.width / 2 )- mouse.XPos ) * dt ) * .4
+        this.yPos += this.size <= this.sizeBorder ? ( this.speed * dt ) * .5 : this.speed * dt 
+        this.xPos += ( ( ( ( canvas.width / 2 )- mouse.XPos ) * dt ) * .4 ) + this.xOffset * dt
         if(this.yPos > canvas.height + 500){
             this.yPos = 0
             this.xPos = randomInt(-600, canvas.width + 600)
-            this.speed = randomInt(160, 240)
+            this.speed = randomInt(180,240)
+            this.size = randomInt(2,6)
         }
     }
 }
@@ -61,10 +65,12 @@ function snowFlakeGenerator(SFCount){
 
         while(snowFlakes.length < SFCount){
             snowFlakes.push(new snowFlake(
-                randomInt(-600, canvas.width + 600),
-                randomInt(-600, canvas.height + 600),
-                randomInt(4,8),
-                randomInt(150,190)
+                x = randomInt(-600, canvas.width + 600),
+                y = randomInt(-600, canvas.height + 600),
+                size = randomInt(2,6),
+                speed = randomInt(180,240),
+                xOffset = randomInt(-20, 20),
+                sizeBorder = 3
             ))
         }
 
